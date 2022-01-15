@@ -1,0 +1,47 @@
+import numpy as np
+
+def creaMatriz ():  
+    print("Procedemos a crear una matriz cuadrada de orden 4")  
+    matriz = []  
+    fila = []
+    for n in range (4):  
+        for m in range (4):  
+            print("Introduce valor para fila:", n+1, "columna:", m+1)  
+            a = int(input())  
+            fila.append(a)  
+        matriz.append(fila)  
+        fila = [] 
+    matriz = np.array(matriz)
+    matriz = matriz.astype(float)
+    return matriz  
+            
+    
+def printMatriz(matriz):  
+    for i in range(4):  
+        print('|{:>6.2f}{:>8.2f}{:>8.2f}{:>8.2f}|'
+              .format(matriz[i][0],matriz[i][1],matriz[i][2],matriz[i][3]))  
+
+def calcMatriz(matriz,pivote):
+    matprov = []
+    matord = []
+    for i in range (pivote):
+        matord.append(matriz[i])
+    for j in range (pivote,4):
+        matprov.append(matriz[j])
+    matprov = np.array(matprov)
+    matprov = matprov[np.abs(matprov[:,pivote]).argsort()[::-1]]
+    for k in range(len(matprov)):
+        matord.append(matprov[k])
+    matriz = np.array(matord)
+    for l in range(pivote+1,4):
+        matriz[l] = np.add(np.multiply(matriz[l], 
+            -(matriz[pivote][pivote]/matriz[l][pivote])),matriz[pivote])
+    return matriz
+
+mat1 = creaMatriz()
+print("\nEsta es tu matriz:\n")    
+printMatriz(mat1)
+print("\nY este el resultado:\n")
+for i in range(4):
+    mat1 = calcMatriz(mat1,i)
+printMatriz(mat1)
